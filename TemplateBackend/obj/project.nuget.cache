@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j8jBpv68Rv7QXW6zHoAcieH6TswszbPq53t8eorVjupIXBOYrcae+9+sygPNFQEvgQqUb7F/hHt3N7kGYdG1tA==",
+  "dgSpecHash": "DJ8SIGpNBYnl4cE1c8mTV3TiGg0slSMdw1q9oY0FZoQXsoskrpS6le1g2wv8fvDSTKds7145yYosNH1ZLbEF3w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\raaka\\source\\repos\\WebConsole\\TemplateBackend\\TemplateBackend.csproj",
+  "projectFilePath": "/Users/anders/Projects/web-console/TemplateBackend/TemplateBackend.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
