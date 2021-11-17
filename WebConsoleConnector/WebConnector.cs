@@ -11,7 +11,7 @@ namespace WebConsoleConnector
             foreach (var methodInfo in type.GetMethods())
             {
                 Console.WriteLine($"{methodInfo.Name}");
-                methodInfo.Invoke(connector, )
+                // methodInfo.Invoke(connector, )
                 foreach (var paramInfo in methodInfo.GetParameters())
                 {
                     Console.WriteLine($"  {paramInfo.Name}: {paramInfo.ParameterType}");

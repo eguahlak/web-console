@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using WebConsoleConnector;
+using WebConsoleConnector.Protocol;
 
 namespace TemplateBackend
 {
@@ -38,36 +39,23 @@ namespace TemplateBackend
     {
         static void Main(string[] args)
         {
-            //PersonController controller = new PersonController();
-            //WebConnector.Start(controller, 4711);
-
-            byte[] buffer = new byte[1_024];
-
-            //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
-            //IPAddress ipAddress = ipHostInfo.AddressList[1];
             IPAddress ipAddress = new IPAddress(new byte[] { 127, 0, 0, 1 });
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 4711);
 
-            Socket serverSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            serverSocket.Bind(localEndPoint);
-            serverSocket.Listen();
+            listener.Bind(localEndPoint);
+            listener.Listen();
             Console.WriteLine("Waiting ...");
-            using Socket socket = serverSocket.Accept();
-            string data = "";
-            //while (true)
-            //{
-                int byteCount = socket.Receive(buffer);
-                data += Encoding.UTF8.GetString(buffer, 0, byteCount);
-            //    if (data.IndexOf("\n\n") > -1) break;
-            //}
+            using Socket handler = listener.Accept();
+            HttpRequest request = new(handler);
 
-            Console.WriteLine(data);
+            string message = $"Received a {request.Method} on {request.Resource} with content length {request.ContentLength}";
 
-            byte[] message = Encoding.UTF8.GetBytes("Hello there");
-
-            socket.Send(message);
+            HttpStringResponse response = new(message);
+            response.SendTo(handler);
+            
+            // handler.Send(Encoding.UTF8.GetBytes(message));
             // socket.Shutdown(SocketShutdown.Both);
             // socket.Close();
 
