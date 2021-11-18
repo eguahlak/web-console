@@ -4,7 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using WebConsoleConnector;
+using WebConsoleConnector.Form;
 using WebConsoleConnector.Protocol;
+using WebConsoleConnector.Utilities;
 
 namespace TemplateBackend
 {
@@ -37,30 +39,74 @@ namespace TemplateBackend
 
     class Program
     {
+        private static void TrySockets()
+        {
+            using HttpSocketListener listener = new HttpSocketListener(4711);
+            Console.WriteLine("Waiting ...");
+            using HttpSocketHandler handler = listener.Accept();
+
+            string content;
+            IHttpRequest request = handler.Receive();
+            switch (request)
+            {
+                case HttpTextRequest text:
+                    content = text.Text; break;
+                default: content = "*** Unknown ***"; break;
+            }
+
+            string message = $"Received a {request.Method} on {request.Resource} with {content} length {request.ContentLength}";
+
+            HttpTextResponse response = new(message);
+            handler.Send(response);
+        }
+
+        private static void TryForms()
+        {
+            var form = new HtmlForm("Copy Instrument")
+            {
+                new Button("Press when done"),
+                new Panel()
+                {
+                    new Button("Continue"),
+                    new Button("Cancel")
+
+                }
+            };
+            StringBuilder builder = new();
+            form.Accept(builder, "");
+            Console.WriteLine(builder.ToString());
+        }
+
+        private static void TrySocketsWithForm()
+        {
+            using HttpSocketListener listener = new HttpSocketListener(4711);
+            while (true)
+            {
+                Console.WriteLine("Waiting ...");
+                using HttpSocketHandler handler = listener.Accept();
+
+                IHttpRequest request = handler.Receive();
+
+                var form = new HtmlForm("Copy Instrument")
+                {
+                    new Button("Press when done"),
+                    new Panel()
+                    {
+                        new Button($"Visit {request.Method} {request.Resource}"),
+                        new Button("Cancel")
+                    }
+                };
+
+                HttpHtmlResponse response = new(form);
+                handler.Send(response);
+            }
+        }
+
         static void Main(string[] args)
         {
-            IPAddress ipAddress = new IPAddress(new byte[] { 127, 0, 0, 1 });
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 4711);
-
-            Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            listener.Bind(localEndPoint);
-            listener.Listen();
-            Console.WriteLine("Waiting ...");
-            using Socket handler = listener.Accept();
-            HttpRequest request = new(handler);
-
-            string message = $"Received a {request.Method} on {request.Resource} with content length {request.ContentLength}";
-
-            HttpStringResponse response = new(message);
-            response.SendTo(handler);
-            
-            // handler.Send(Encoding.UTF8.GetBytes(message));
-            // socket.Shutdown(SocketShutdown.Both);
-            // socket.Close();
-
-
-
+            // TrySockets();
+            // TryForms();
+            TrySocketsWithForm();
         }
     }
 }

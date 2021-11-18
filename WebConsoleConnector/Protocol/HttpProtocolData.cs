@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebConsoleConnector.Protocol
 {
-    public class HttpRequest : IHttpRequest
+    public class HttpProtocolData
     {
         private static int IndexOfCrLf(byte[] buffer, int offset, int size)
         {
@@ -16,15 +16,6 @@ namespace WebConsoleConnector.Protocol
                 if (buffer[i] == 13 && buffer[i + 1] == 10) return i;
             }
             return -1;
-        }
-
-
-        private void ProcessResourceLine(string line)
-        {
-            string[] parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            Method = parts[0];
-            Resource = parts[1];
-            Protocol = parts[2];
         }
 
         private void ProcessHeaderLine(string line)
@@ -42,11 +33,9 @@ namespace WebConsoleConnector.Protocol
                     ContentType = headerValue;
                     break;
             }
-
-
         }
 
-        public HttpRequest(Socket socket)
+        public HttpProtocolData(Socket socket)
         {
             byte[] buffer = new byte[1_024];
             // byte[] buffer = new byte[128];
@@ -63,11 +52,11 @@ namespace WebConsoleConnector.Protocol
                 { // line end found
                     int lineLenght = lineEnd - offset;
                     line += Encoding.ASCII.GetString(buffer, offset, lineLenght);
+                    offset = lineEnd + 2;
                     if (line == null || line.Length == 0) break;
-                    if (lineNumber == 0) ProcessResourceLine(line);
+                    if (lineNumber == 0) SigatureLine = line;
                     else ProcessHeaderLine(line);
                     line = null;
-                    offset = lineEnd + 2;
                     lineNumber++;
                 }
                 else
@@ -78,14 +67,18 @@ namespace WebConsoleConnector.Protocol
                     count = socket.Receive(buffer);
                 }
             }
-            // process body goes here
+            Content = new byte[ContentLength];
+            int index = count - offset;
+            if (index > 0) Array.Copy(buffer, offset, Content, 0, index);
+            while (true)
+            {
+                if (index == Content.Length) break;
+                count = socket.Receive(Content, index, Content.Length - index, SocketFlags.None);
+                index += count;
+            }
         } 
 
-        public string Method { get; private set; }
-
-        public string Resource { get; private set; }
-
-        public string Protocol { get; private set; }
+        public string SigatureLine { get; private set; }
 
         public int ContentLength { get; private set; }
 
@@ -93,6 +86,6 @@ namespace WebConsoleConnector.Protocol
 
         public IDictionary<string, string> Headers { get; } = new Dictionary<string, string>();
 
-        public byte[] Content => throw new NotImplementedException();
+        public byte[] Content { get; private set; }
     }
 }

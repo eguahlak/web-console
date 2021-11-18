@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WebConsoleConnector.Protocol
 {
@@ -17,6 +13,5 @@ namespace WebConsoleConnector.Protocol
 
         public IDictionary<string, string> Headers { get; }
 
-        public byte[] Content { get; }
     }
 }

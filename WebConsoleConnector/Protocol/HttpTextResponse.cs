@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace WebConsoleConnector.Protocol
 {
-    public class HttpStringResponse : HttpResponseBase, IHttpResponse
+    public class HttpTextResponse : HttpResponseBase
     {
-        public HttpStringResponse(string data)
+        public HttpTextResponse(string data)
         {
             Content = Encoding.UTF8.GetBytes(data);
         }
