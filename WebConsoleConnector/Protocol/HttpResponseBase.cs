@@ -1,40 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WebConsoleConnector.Protocol
 {
     public abstract class HttpResponseBase : IHttpResponse
     {
+        protected HttpProtocolData data;
+
         public string Protocol => "HTTP/1.1";
-        public abstract int Code { get; }
-        public abstract string Message { get; }
-        public abstract string ContentType { get; }
-        public int ContentLength => Content == null ? 0 : Content.Length;
 
-        public IDictionary<string, string> Headers { get; } = new Dictionary<string, string>();
-        
-        public byte[] Content { get; protected set; }
+        public int Code { get; }
 
-        private void SendASCIILine(Socket handler, string text)
+        public string Message { get; }
+
+        public string ContentType => data.ContentType;
+
+        public int ContentLength => data.ContentLength;
+
+        public IDictionary<string, string> Headers => data.Headers;
+
+        public HttpResponseBase(string contentType)
         {
-            handler.Send(Encoding.ASCII.GetBytes(text + "\r\n"));
+            Code = 200;
+            Message = "OK";
+            data = new($"{Protocol} {Code} {Message}", contentType);
         }
 
-        public void SendTo(Socket handler)
+        public HttpResponseBase(int code, string message)
         {
-            SendASCIILine(handler, $"{Protocol} {Code} {Message}");
-            SendASCIILine(handler, $"Content-Type: {ContentType}");
-            SendASCIILine(handler, $"Content-Length: {ContentLength}");
-            foreach (KeyValuePair<string, string> header in Headers)
-            {
-                SendASCIILine(handler, $"{header.Key}: {header.Value}");
-            }
-            SendASCIILine(handler, "");
-            handler.Send(Content);
+            Code = code;
+            Message = message;
+            data = new($"{Protocol} {Code} {Message}", null);
         }
+
+        public void SendTo(Socket handler) => data.SendTo(handler);
     }
 }

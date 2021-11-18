@@ -45,6 +45,13 @@ namespace WebConsoleConnector.Form
             builder.AppendIndentedLine("", $"</html>");
         }
 
+        public string ToHtml()
+        {
+            StringBuilder builder = new();
+            Accept(builder, "");
+            return builder.ToString();
+        }
+
         public void Clear()
         {
             throw new NotImplementedException();

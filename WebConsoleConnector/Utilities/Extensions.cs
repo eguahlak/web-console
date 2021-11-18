@@ -10,5 +10,14 @@ namespace WebConsoleConnector.Utilities
         public static void AppendIndentedLine(this StringBuilder builder, string indent, string line) =>
             builder.Append($"{indent}{line}\n");
 
+        public static int IndexOfCrLf(this byte[] buffer, int offset, int size)
+        {
+            for (int i = offset; i < size - 1; i++)
+            {
+                if (buffer[i] == 13 && buffer[i + 1] == 10) return i;
+            }
+            return -1;
+        }
+
     }
 }

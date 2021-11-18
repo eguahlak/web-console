@@ -10,7 +10,7 @@ namespace WebConsoleConnector.Protocol
         public HttpRequestBase(HttpProtocolData data) 
         {
             this.data = data;
-            string[] parts = data.SigatureLine.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = data.SignatureLine.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             Method = parts[0];
             Resource = parts[1];
             Protocol = parts[2];

@@ -64,6 +64,7 @@ namespace TemplateBackend
         {
             var form = new HtmlForm("Copy Instrument")
             {
+                new Button("Hej Frederik"),
                 new Button("Press when done"),
                 new Panel()
                 {
@@ -72,9 +73,7 @@ namespace TemplateBackend
 
                 }
             };
-            StringBuilder builder = new();
-            form.Accept(builder, "");
-            Console.WriteLine(builder.ToString());
+            Console.WriteLine(form.ToHtml());
         }
 
         private static void TrySocketsWithForm()
@@ -87,10 +86,19 @@ namespace TemplateBackend
 
                 IHttpRequest request = handler.Receive();
 
+                var list = new List<string> { "anders", "frederik" };
+
+                var person = new Person
+                {
+                    Age = 7,
+                    Name = "hej",
+                    Id = 76
+                };
+
                 var form = new HtmlForm("Copy Instrument")
                 {
                     new Button("Press when done"),
-                    new Panel()
+                    new Panel
                     {
                         new Button($"Visit {request.Method} {request.Resource}"),
                         new Button("Cancel")

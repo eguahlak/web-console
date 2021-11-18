@@ -18,7 +18,5 @@ namespace WebConsoleConnector.Protocol
 
         public IDictionary<string, string> Headers { get; }
 
-        public byte[] Content { get; }
-
     }
 }

@@ -45,13 +45,10 @@ namespace WebConsoleConnector.Protocol
 
         public IHttpRequest Receive()
         {
-            string type = "none";
             HttpProtocolData data = new(socket);
-            if (!data.Headers.ContainsKey("Content-Type")) return new HttpGetRequest(data);
-            string[] typeParts = data.Headers["Content-Type"].Split(';', StringSplitOptions.TrimEntries);
-            type = typeParts[0];
-            switch (type)
+            switch (data.ContentType)
             {
+                case null: return new HttpGetRequest(data);
                 case "text/plain": return new HttpTextRequest(data);
                 default: return new HttpTextRequest(data);
             }
