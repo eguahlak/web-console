@@ -9,7 +9,7 @@ namespace WebConsoleConnector.Protocol
 {
     public interface IHttpResponse : IResponse
     {
-        public string Protocol { get; }
+        public string Protocol => "HTTP/1.1"; 
         public int Code { get; }
         public string Message { get; }
 

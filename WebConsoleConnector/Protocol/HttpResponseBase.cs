@@ -4,8 +4,18 @@ using System.Text;
 
 namespace WebConsoleConnector.Protocol
 {
-    public abstract class HttpResponseBase : IHttpResponse
+    public class HttpResponseBase : IHttpResponse
     {
+        protected static Dictionary<int, string> Messages = new Dictionary<int, string>
+        {
+            [200] = "OK",
+            [201] = "Created",
+            [204] = "No Content",
+
+            [404] = "Not Found",
+            [405] = "Method Not Allowed"
+        };
+
         protected HttpProtocolData data;
 
         public string Protocol => "HTTP/1.1";
@@ -33,6 +43,8 @@ namespace WebConsoleConnector.Protocol
             Message = message;
             data = new($"{Protocol} {Code} {Message}", null);
         }
+
+        public HttpResponseBase(int code) : this(code, Messages[code]) { }
 
         public void SendTo(Socket handler) => data.SendTo(handler);
     }

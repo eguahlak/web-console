@@ -99,7 +99,7 @@ namespace WebConsoleConnector.Protocol
             ContentType = contentType;
         }
 
-        private void SendASCIILine(Socket handler, string text)
+        private static void SendASCIILine(Socket handler, string text)
         {
             handler.Send(Encoding.ASCII.GetBytes(text + "\r\n"));
         }
@@ -112,7 +112,7 @@ namespace WebConsoleConnector.Protocol
                 SendASCIILine(handler, $"{header.Key}: {header.Value}");
             }
             SendASCIILine(handler, "");
-            handler.Send(Content);
+            if (ContentLength > 0) handler.Send(Content);
         }
 
 

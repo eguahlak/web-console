@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using WebConsoleConnector.Form.Actions;
 using WebConsoleConnector.Utilities;
 
 namespace WebConsoleConnector.Form
@@ -15,8 +16,24 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<button id='{Id}'>{Title.Encoded()}</button>");
+            builder.AppendIndentedLine(indent, $"<button id='{Id}' onclick='sendClickAction(this);'>{Title.Encoded()}</button>");
         }
 
+        public override bool Handle(IAction action)
+        {
+            if (action is ClickAction clickAction)
+            {
+                if (OnClick == null)
+                {
+                    Console.WriteLine($"Button {Title}/{Id} clicked, but no handler found!");
+                }
+                else
+                {
+                    OnClick(this);
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }

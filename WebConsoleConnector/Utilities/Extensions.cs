@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using WebConsoleConnector.Form;
 using static System.Web.HttpUtility;
 
 namespace WebConsoleConnector.Utilities

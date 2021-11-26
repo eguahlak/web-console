@@ -50,6 +50,7 @@ namespace WebConsoleConnector.Protocol
             {
                 case null: return new HttpGetRequest(data);
                 case "text/plain": return new HttpTextRequest(data);
+                case "application/json": return new HttpEventRequest(data);
                 default: return new HttpTextRequest(data);
             }
         }

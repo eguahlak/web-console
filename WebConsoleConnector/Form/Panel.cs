@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using WebConsoleConnector.Form.Actions;
 using WebConsoleConnector.Utilities;
 
 namespace WebConsoleConnector.Form
@@ -28,29 +29,11 @@ namespace WebConsoleConnector.Form
         public void Add(IChild child)
         {
             child.Parent = this;
-            HtmlForm.Components[child.Id] = child;
+            HttpForm.Components[child.Id] = child;
             Children.Add(child);
         }
 
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(IChild item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(IChild[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<IChild> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        public override bool Handle(IAction formEvent) => false;
 
         public bool Remove(IChild item)
         {

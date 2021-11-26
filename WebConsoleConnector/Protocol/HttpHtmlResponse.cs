@@ -5,7 +5,7 @@ namespace WebConsoleConnector.Protocol
 {
     public class HttpHtmlResponse : HttpResponseBase
     {
-        public HttpHtmlResponse(HtmlForm form) : base("text/html")
+        public HttpHtmlResponse(HttpForm form) : base("text/html")
         {
             StringBuilder builder = new();
             form.Accept(builder, "");

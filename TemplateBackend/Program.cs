@@ -1,70 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using WebConsoleConnector;
 using WebConsoleConnector.Form;
-using WebConsoleConnector.Protocol;
-using WebConsoleConnector.Utilities;
+
 
 namespace TemplateBackend
 {
-    public class Person
+    internal class CopyForm : HttpForm
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
-    
-    public class PersonController
-    {
-        public Person GetPerson(long id)
-        {
-            throw new NotImplementedException();
-        }
+        Label nameLabel;
 
-        public List<Person> GetPerson()
+        public CopyForm() : base("Copy Instrument Form")
         {
-            throw new NotImplementedException();
-        }
-
-        public void PostPerson(Person person)
-        {
-            throw new NotImplementedException();
+            
         }
     }
-    
+
 
 
     class Program
     {
-        private static void TrySockets()
+
+        private static void SomeoneClicked(IComponent something)
         {
-            using HttpSocketListener listener = new HttpSocketListener(4711);
-            Console.WriteLine("Waiting ...");
-            using HttpSocketHandler handler = listener.Accept();
-
-            string content;
-            IHttpRequest request = handler.Receive();
-            switch (request)
-            {
-                case HttpTextRequest text:
-                    content = text.Text; break;
-                default: content = "*** Unknown ***"; break;
-            }
-
-            string message = $"Received a {request.Method} on {request.Resource} with {content} length {request.ContentLength}";
-
-            HttpTextResponse response = new(message);
-            handler.Send(response);
+            Console.WriteLine($">>{something.Id} was clicked");
         }
 
-        private static void TryForms()
+        private static void TryFormPublish()
         {
-            var form = new HtmlForm("Copy Instrument")
+            var someLabel = new Label("Location: ");
+            var someText = new TextField("We were here", false);
+            var someField = new TextField("Change me", true)
             {
-                new Button("Hej Frederik"),
+                OnUpdate = (c, v) =>
+                {
+                    Console.WriteLine($">>{c.Id} was updated to {v}");
+                    someText.Value = $"We were here with {v}";
+                }
+            };
+            var frederikButton = new Button("Hej Frederik")
+            {
+                OnClick = (c) =>
+                {
+                    someText.Value = "";
+                }
+            };
+            var form = new HttpForm("Copy Instrument")
+            {
+
+                someLabel,
+                someText,
+                someField,
+                frederikButton,
                 new Button("Press when done"),
                 new Panel()
                 {
@@ -73,48 +58,19 @@ namespace TemplateBackend
 
                 }
             };
-            Console.WriteLine(form.ToHtml());
-        }
-
-        private static void TrySocketsWithForm()
-        {
-            using HttpSocketListener listener = new HttpSocketListener(4711);
-            while (true)
+            form.Publish();
+            for (int i = 1; true; i++)
             {
-                Console.WriteLine("Waiting ...");
-                using HttpSocketHandler handler = listener.Accept();
-
-                IHttpRequest request = handler.Receive();
-
-                var list = new List<string> { "anders", "frederik" };
-
-                var person = new Person
-                {
-                    Age = 7,
-                    Name = "hej",
-                    Id = 76
-                };
-
-                var form = new HtmlForm("Copy Instrument")
-                {
-                    new Button("Press when done"),
-                    new Panel
-                    {
-                        new Button($"Visit {request.Method} {request.Resource}"),
-                        new Button("Cancel")
-                    }
-                };
-
-                HttpHtmlResponse response = new(form);
-                handler.Send(response);
+                // Console.WriteLine("Indtast en tekst");
+                string text = Console.ReadLine();
+                someText.Value = text;
+                someLabel.Value = $"{i}. placering";
             }
-        }
+         }
 
         static void Main(string[] args)
         {
-            // TrySockets();
-            // TryForms();
-            TrySocketsWithForm();
+            TryFormPublish();
         }
     }
 }

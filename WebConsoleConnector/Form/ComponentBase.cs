@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using WebConsoleConnector.Form.Actions;
 
 namespace WebConsoleConnector.Form
 {
@@ -14,6 +15,12 @@ namespace WebConsoleConnector.Form
 
         public Guid Id { get; }
 
+        public IComponent.OnClickHandler OnClick { get; set; } = null;
+
+        public IComponent.OnUpdateHandler OnUpdate { get; set; } = null;
+
         public abstract void Accept(StringBuilder builder, string indent);
+
+        public abstract bool Handle(IAction formEvent);
     }
 }
