@@ -1,16 +1,17 @@
 ﻿using System;
 using WebConsoleConnector.Form;
+using static WebConsoleConnector.Utilities.Extensions;
 
 
 namespace TemplateBackend
 {
-    internal class CopyForm : HttpForm
+    internal class CopyForm : HttpForm, IParent
     {
-        Label nameLabel;
+        public Label label = new("Hello"); 
 
         public CopyForm() : base("Copy Instrument Form")
         {
-            
+            label
         }
     }
 
@@ -18,11 +19,6 @@ namespace TemplateBackend
 
     class Program
     {
-
-        private static void SomeoneClicked(IComponent something)
-        {
-            Console.WriteLine($">>{something.Id} was clicked");
-        }
 
         private static void TryFormPublish()
         {

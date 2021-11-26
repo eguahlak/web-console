@@ -178,42 +178,14 @@ namespace WebConsoleConnector.Form
             listener.Start();
         }
 
-        public void Publish() => Publish(4711);
-
-        #region ICollection leftovers
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(IChild item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(IChild[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Remove(IChild item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<IChild> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
         public override bool Handle(IAction e) => false;
 
-        #endregion
+        public void Publish() => Publish(4711);
+
     }
 }

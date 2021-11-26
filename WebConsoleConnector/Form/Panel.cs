@@ -33,16 +33,12 @@ namespace WebConsoleConnector.Form
             Children.Add(child);
         }
 
-        public override bool Handle(IAction formEvent) => false;
-
         public bool Remove(IChild item)
         {
             throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        public override bool Handle(IAction formEvent) => false;
+
     }
 }
