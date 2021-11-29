@@ -7,9 +7,9 @@ namespace WebConsoleConnector.Protocol
 {
     public class HttpEventsResponse : HttpResponseBase
     {
-        public HttpEventsResponse(IList<IAction> events) : base("application/json")
+        public HttpEventsResponse(IList<IAction> actions) : base("application/json")
         {
-            string json = SerializeObject(events);
+            string json = SerializeObject(actions);
             data.Content = Encoding.UTF8.GetBytes(json);
         }
     }

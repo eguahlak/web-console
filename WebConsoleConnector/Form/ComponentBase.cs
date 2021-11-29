@@ -21,6 +21,6 @@ namespace WebConsoleConnector.Form
 
         public abstract void Accept(StringBuilder builder, string indent);
 
-        public abstract bool Handle(IAction formEvent);
+        public abstract bool Handle(IAction action);
     }
 }

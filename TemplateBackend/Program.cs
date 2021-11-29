@@ -5,17 +5,7 @@ using static WebConsoleConnector.Utilities.Extensions;
 
 namespace TemplateBackend
 {
-    internal class CopyForm : HttpForm, IParent
-    {
-        public Label label = new("Hello"); 
-
-        public CopyForm() : base("Copy Instrument Form")
-        {
-            label
-        }
-    }
-
-
+    
 
     class Program
     {
@@ -54,7 +44,7 @@ namespace TemplateBackend
 
                 }
             };
-            form.Publish();
+            form.Publish(8089);
             for (int i = 1; true; i++)
             {
                 // Console.WriteLine("Indtast en tekst");
