@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>dk.rigsarkivet.HttpForm</PackageId>
+    <PackageVersion>0.9</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,11 +13,19 @@
     <None Remove="Newtonsoft.Json" />
     <None Remove="JsonKnownTypes" />
     <None Remove="Form\Events\" />
+    <None Remove="Form\Files\" />
+    <None Remove="Form\Files\scripts.js" />
+    <None Remove="Form\Files\styles.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\" />
+    <Folder Include="Form\Files\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JsonKnownTypes" Version="0.5.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form\Files\scripts.js" />
+    <EmbeddedResource Include="Form\Files\styles.css" />
   </ItemGroup>
 </Project>

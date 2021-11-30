@@ -7,6 +7,8 @@ using System.Collections;
 using WebConsoleConnector.Protocol;
 using WebConsoleConnector.Form.Actions;
 using System.Threading;
+using System.IO;
+using System.Reflection;
 
 namespace WebConsoleConnector.Form
 {
@@ -42,19 +44,25 @@ namespace WebConsoleConnector.Form
             Children.Add(child);
         }
 
-        private string script =
-@"
-    <script>
-    </script>
-";
+
 
         public override void Accept(StringBuilder builder, string indent)
         {
+            string rootPath = Assembly.GetExecutingAssembly().Location;
+            
+//            string fullFilePath = Path.Combine((new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath.Split(new string[] { "/bin" }, StringSplitOptions.None)[0]
+//                          , "@/Images/test.png");
+
             builder.AppendIndentedLine("", $"<!DOCTYPE>");
             builder.AppendIndentedLine("", $"<html>");
             builder.AppendIndentedLine("  ", $"<head>");
             builder.AppendIndentedLine("    ", $"<title>{Title}</title>");
-            builder.AppendIndentedLine("", script);
+            builder.AppendIndentedLine("    ", "<style>");
+            builder.AppendIndentedLines("      ", @"Form\Files\styles.css");
+            builder.AppendIndentedLine("    ", "</style>");
+            builder.AppendIndentedLine("    ", "<script>");
+            builder.AppendIndentedLines("      ", @"Form\Files\scripts.js");
+            builder.AppendIndentedLine("    ", "</script>");
             builder.AppendIndentedLine("  ", $"</head>");
             builder.AppendIndentedLine("  ", $"<body onload='init();'>");
             foreach (var child in Children) child.Accept(builder, "    ");

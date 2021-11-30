@@ -15,10 +15,13 @@ namespace WebConsoleConnector.Utilities
             else builder.Append($"{indent}{line}\n");
         }
 
-        //public static void AppendIndentedLines(this StringBuilder builder, string indent, )
-        //{
-
-        //}
+        public static void AppendIndentedLines(this StringBuilder builder, string indent, string fileName)
+        {
+            foreach (string line in File.ReadLines(fileName))
+            {
+                builder.AppendIndentedLine(indent, line);
+            }
+        }
 
         public static int IndexOfCrLf(this byte[] buffer, int offset, int size)
         {
