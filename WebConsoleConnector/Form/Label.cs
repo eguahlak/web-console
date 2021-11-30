@@ -29,7 +29,7 @@ namespace WebConsoleConnector.Form
             builder.AppendIndentedLine(indent, $"<span class='Label' id='{Id}'>{Value}</span>");
         }
 
-        public override bool Handle(IAction formEvent) => false;
+        public override bool Handle(IAction action) => false;
 
     }
 }
