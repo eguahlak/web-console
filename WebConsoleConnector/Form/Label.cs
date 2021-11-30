@@ -9,6 +9,8 @@ namespace WebConsoleConnector.Form
     {
         private string value;
 
+        public Width Width { get; set; } = new(0.0);
+
         public string Value
         {
             get => value;
@@ -26,7 +28,7 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<span class='Label' id='{Id}'>{Value}</span>");
+            builder.AppendIndentedLine(indent, $"<div class='Label' style='{Width}' id='{Id}'>{Value}</div>");
         }
 
         public override bool Handle(IAction action) => false;

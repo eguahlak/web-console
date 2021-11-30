@@ -9,21 +9,30 @@ namespace WebConsoleConnector.Form
 {
     public class Panel : ChildBase, IParent
     {
-        
-        
-        public Panel()
-        {
-        }
 
+        public Border Border { get; }
+
+        public Width Width { get; }
+        
         public IList<IChild> Children { get; } = new List<IChild>();
 
         public int Count => Children.Count;
 
         public bool IsReadOnly => false;
+        
+        public Panel(Border border, Width width)
+        {
+            Border = border;
+            Width = width;
+        }
+        
+        public Panel() : this (false, 0.0) { }
+
+        public Panel(Border border) : this(border, 0.0) { }
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<div class='Panel' id='{Id}'>");
+            builder.AppendIndentedLine(indent, $"<div class='Panel{Border}' id='{Id}'>");
             foreach (var child in Children) child.Accept(builder, indent == null ? null : $"  {indent}");
             builder.AppendIndentedLine(indent, $"</div>");
         }
@@ -33,14 +42,11 @@ namespace WebConsoleConnector.Form
             child.Parent = this;
             HttpForm.Components[child.Id] = child;
             Children.Add(child);
-            //HttpForm.Actions.Add(new InsertAction(Id, child.ToHtml()));
         }
 
         public void Insert(IChild child)
         {
-            child.Parent = this;
-            HttpForm.Components[child.Id] = child;
-            Children.Add(child);
+            Add(child);
             HttpForm.Actions.Add(new InsertAction(Id, child.ToHtml()));
         }
 

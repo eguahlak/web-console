@@ -48,11 +48,6 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            string rootPath = Assembly.GetExecutingAssembly().Location;
-            
-//            string fullFilePath = Path.Combine((new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath.Split(new string[] { "/bin" }, StringSplitOptions.None)[0]
-//                          , "@/Images/test.png");
-
             builder.AppendIndentedLine("", $"<!DOCTYPE>");
             builder.AppendIndentedLine("", $"<html>");
             builder.AppendIndentedLine("  ", $"<head>");
@@ -88,6 +83,9 @@ namespace WebConsoleConnector.Form
                 {
                     switch (httpGet.Resource)
                     {
+                        case "/favicon.ico":
+                            response = new HttpFaviconResponse();
+                            break;
                         case "/actions":
                             lock (Actions)
                             {
