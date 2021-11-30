@@ -1,12 +1,12 @@
 ﻿function init() {
     window.setInterval(getActions, 2000);
-    document.body.style.backgroundColor = ""#ffeeee"";
-}
+    document.body.style.backgroundColor = '#cccccc';
+    }
 
 function update(id, value) {
     let element = document.getElementById(id);
     switch (element.tagName) {
-        case 'SPAN':
+        case 'DIV':
             element.innerHTML = value;
             break;
         case 'INPUT':
@@ -15,8 +15,8 @@ function update(id, value) {
         case 'BUTTON':
             element.innerHTML = value;
             break;
+        }
     }
-}
 
 function insert(id, html) {
     let parent = document.getElementById(id);
@@ -25,9 +25,7 @@ function insert(id, html) {
     //let template = document.createElement('template');
     //template.innerHtml = html.trim();
     //parent.appendChild(template.content.firstChild);
-}
-
-
+    }
 
 function getActions() {
     var xhttp = new XMLHttpRequest();
@@ -44,13 +42,13 @@ function getActions() {
                     case 'InsertAction':
                         insert(action.Id, action.Html);
                         break;
+                    }
                 }
             }
-        }
-    };
+        };
     xhttp.open('GET', 'actions');
     xhttp.send();
-}
+    }
 
 function sendAction(action) {
     var xhttp = new XMLHttpRequest();
@@ -59,17 +57,17 @@ function sendAction(action) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             // Nothing to do yet (fire and forget)
+            }
         }
-    }
     xhttp.send(JSON.stringify(action));
 
-    getActions();
-}
+    // getActions();
+    }
 
 function sendClickAction(element) {
     sendAction({ $type: 'ClickAction', Id: element.id });
-}
+    }
 
 function sendUpdateAction(element) {
     sendAction({ $type: 'UpdateAction', Id: element.id, Value: element.value });
-}
+    }

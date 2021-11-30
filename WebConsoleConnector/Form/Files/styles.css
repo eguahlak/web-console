@@ -1,2 +1,24 @@
 ﻿body {
-}
+    margin: 2ex;
+    }
+
+.Label {
+    float: left;
+    padding-right: 1ex;
+    }
+
+.Panel {
+    margin: 1ex 0 1ex 0;
+    padding: 0.2ex 0.5ex 0.2ex 0.5ex;
+    }
+
+.LineStart {
+    clear: both;
+    padding: 0;
+    margin: 0;
+    }
+
+.Bordered {
+    border-width: 3px;
+    border-style: groove;
+    }

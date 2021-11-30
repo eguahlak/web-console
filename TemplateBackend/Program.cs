@@ -10,9 +10,9 @@ namespace TemplateBackend
     public class LtoPanel : Panel
     {
         public LtoPanel(string text, string extra) : base() {
-            var label = new Label(text);
+            var label = new Label(text) { Width = 30 };
             Add(label);
-            Add(new Field("", $"Enter note on {text} here", true));
+            Add(new Field("", $"Enter note on {text} here", true) { Width = 50 }) ;
             Add(new Button("Done!") 
             {
                 OnClick = c =>
@@ -87,14 +87,16 @@ namespace TemplateBackend
                     label.Value = $"Last value of {c.Id} was: {v}";
                 }
             };
-            var ltoPanel = new Panel();
+            var ltoPanel = new Panel(true);
 
 
             var myForm = new HttpForm("Hello Nico and Frede")
             {
                 label,
+                Newline.Ruler,
                 field,
-                new Button("Tryk for helvede!")
+                // Newline.Break,
+                new Button("Tryk her!")
                 {
                     OnClick = c =>
                     {
@@ -105,6 +107,7 @@ namespace TemplateBackend
                 ltoPanel
             };
             myForm.Publish();
+
             Console.WriteLine("published");
             for (int i = 0; i < 10; i++)
             {

@@ -9,6 +9,8 @@ namespace WebConsoleConnector.Form
     {
         private string value;
 
+        public Width Width { get; set; }
+
         public string Value
         {
             get => value;
@@ -39,9 +41,9 @@ namespace WebConsoleConnector.Form
         public override void Accept(StringBuilder builder, string indent)
         {
             if (Editable)
-                builder.AppendIndentedLine(indent, $"<input class='Field' id='{Id}' {Hint}value='{Value}' onchange='sendUpdateAction(this);' />");
+                builder.AppendIndentedLine(indent, $"<input class='Field' style='{Width}' id='{Id}' {Hint}value='{Value}' onchange='sendUpdateAction(this);' />");
             else 
-                builder.AppendIndentedLine(indent, $"<input class='Field' id='{Id}' {Hint}readonly='readonly' value='{Value}' />");
+                builder.AppendIndentedLine(indent, $"<input class='Field' style='{Width}' id='{Id}' {Hint}readonly='readonly' value='{Value}' />");
         }
 
         public override bool Handle(IAction action)
