@@ -16,7 +16,7 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<button id='{Id}' onclick='sendClickAction(this);'>{Title.Encoded()}</button>");
+            builder.AppendIndentedLine(indent, $"<button id='{Id}'{State} onclick='sendClickAction(this);'>{Title.Encoded()}</button>");
         }
 
         public override bool Handle(IAction action)

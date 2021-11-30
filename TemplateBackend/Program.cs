@@ -9,75 +9,54 @@ namespace TemplateBackend
 
     public class LtoPanel : Panel
     {
+        public Label TapeLabel { get; }
+        public Field TapeNote { get; }
+        public Button DoButton { get; }
+        public Button DontButton { get; }
+        public Button ClearButton { get; }
+
         public LtoPanel(string text, string extra) : base() {
-            var label = new Label(text) { Width = 30 };
-            Add(label);
-            Add(new Field(extra, $"Enter note on {text} here", true) { Width = 50 }) ;
-            Add(new Button("Done!") 
+            TapeLabel = new Label(text) { Width = 20 };
+            TapeNote = new Field(extra, $"Enter note on {text} here", true) { Width = 50 };
+            DoButton = new("Do")
             {
                 OnClick = c =>
-                { 
-                    label.Value = $"*{label.Value}*";
+                {
+                    DontButton.Disabled = false;
+                    (c as Button).Disabled = true;
                 }
-            });
-            }
+            };
+            DontButton = new("Don't")
+            {
+                Disabled = true,
+                OnClick = c =>
+                {
+                    DoButton.Disabled = false;
+                    ClearButton.Disabled = false;
+                    (c as Button).Disabled = true;
+                }
+            };
+            ClearButton = new("Clear")
+            {
+                Disabled = true,
+                OnClick = c =>
+                {
+                    Hidden = true;
+                }
+            };
+            Add(TapeLabel);
+            Add(TapeNote);
+            Add(DoButton);
+            Add(DontButton);
+            Add(ClearButton);
+
+        }
     }
 
     class Program
     {
 
-        private static void TryFormPublish()
-        {
-            var someLabel = new Label("Location: ");
-            var someText = new Field("We were here", false);
-            var someField = new Field("Change me", true)
-            {
-                OnUpdate = (c, v) =>
-                {
-                    Console.WriteLine($">>{c.Id} was updated to {v}");
-                    someText.Value = $"We were here with {v}";
-                }
-            };
-            var mediaPanel = new Panel
-            {
-                new Label("LT0001")
-            };
-            var frederikButton = new Button("Hej Frederik")
-            {
-                OnClick = (c) =>
-                {
-                    someText.Value = "";
-                }
-            };
-            var form = new HttpForm("Copy Instrument")
-            {
-
-                someLabel,
-                someText,
-                someField,
-                frederikButton,
-                new Button("Press when done"),
-                new Panel()
-                {
-                    new Button("Continue"),
-                    new Button("Cancel")
-
-                },
-                mediaPanel
-            };
-            form.Publish(8089);
-            for (int i = 1; true; i++)
-            {
-                // Console.WriteLine("Indtast en tekst");
-                string text = Console.ReadLine();
-                someText.Value = text;
-                someLabel.Value = $"{i}. placering";
-                mediaPanel.Add(new Label(text));
-            }
-        }
-
-
-        private static void TryForNicoAndFrede()
+        private static void TryForm()
         {
             var label = new Label("Her starter det");
             var field = new Field("Skriv noget her", true)
@@ -124,7 +103,7 @@ namespace TemplateBackend
         static void Main(string[] args)
         {
             // TryFormPublish();
-            TryForNicoAndFrede();
+            TryForm();
         }
     }
 }

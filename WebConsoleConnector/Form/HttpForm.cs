@@ -53,10 +53,10 @@ namespace WebConsoleConnector.Form
             builder.AppendIndentedLine("  ", $"<head>");
             builder.AppendIndentedLine("    ", $"<title>{Title}</title>");
             builder.AppendIndentedLine("    ", "<style>");
-            builder.AppendIndentedLines("      ", @"Form\Files\styles.css");
+            builder.AppendIndentedLines("      ", @"Form/Files/styles.css");
             builder.AppendIndentedLine("    ", "</style>");
             builder.AppendIndentedLine("    ", "<script>");
-            builder.AppendIndentedLines("      ", @"Form\Files\scripts.js");
+            builder.AppendIndentedLines("      ", @"Form/Files/scripts.js");
             builder.AppendIndentedLine("    ", "</script>");
             builder.AppendIndentedLine("  ", $"</head>");
             builder.AppendIndentedLine("  ", $"<body onload='init();'>");

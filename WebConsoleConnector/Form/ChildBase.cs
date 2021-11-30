@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using WebConsoleConnector.Form.Actions;
 
 namespace WebConsoleConnector.Form
 {
@@ -8,9 +9,39 @@ namespace WebConsoleConnector.Form
         private IParent parent = null;
 
         private bool hidden = false;
-        private bool enabled = true;
+        private bool disabled = false;
 
-        //public void Hide
+        public bool Hidden
+        {
+            get => hidden;
+            set
+            {
+                if (hidden != value)
+                {
+                    hidden = value;
+                    if (parent == null) return;
+                    if (hidden) HttpForm.Actions.Add(new ChangeAction(Id, StateChange.Hide));
+                    else HttpForm.Actions.Add(new ChangeAction(Id, StateChange.Show));
+                }
+            }
+        }
+
+        public bool Disabled
+        {
+            get => disabled;
+            set
+            {
+                if (disabled != value)
+                {
+                    disabled = value;
+                    if (parent == null) return;
+                    if (disabled) HttpForm.Actions.Add(new ChangeAction(Id, StateChange.Disable));
+                    else HttpForm.Actions.Add(new ChangeAction(Id, StateChange.Enable));
+                }
+            }
+        }
+
+        public string State => $"{(hidden ? "hidden " : "")}{(disabled ? "disabled " : "")}";
 
         public virtual IParent Parent
         {
