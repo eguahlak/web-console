@@ -14,7 +14,15 @@ namespace WebConsoleConnector.Form
 
         void Accept(StringBuilder builder, string indent);
 
+        void Accept(StringBuilder builder) => Accept(builder, null);
+
         bool Handle(IAction formEvent);
 
+        string ToHtml()
+        {
+            StringBuilder builder = new();
+            Accept(builder, "");
+            return builder.ToString();
+        }
     }
 }

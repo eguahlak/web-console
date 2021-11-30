@@ -15,7 +15,7 @@ namespace WebConsoleConnector.Form
             set
             {
                 this.value = value;
-                HttpForm.Events.Add(new UpdateAction(Id, value));
+                HttpForm.Actions.Add(new UpdateAction(Id, value));
             }
         }
 
@@ -26,7 +26,7 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<span id='{Id}'>{Value}</span>");
+            builder.AppendIndentedLine(indent, $"<span class='Label' id='{Id}'>{Value}</span>");
         }
 
         public override bool Handle(IAction formEvent) => false;

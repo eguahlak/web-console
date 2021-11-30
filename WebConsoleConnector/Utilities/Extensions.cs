@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using WebConsoleConnector.Form;
 using static System.Web.HttpUtility;
 
@@ -8,8 +9,16 @@ namespace WebConsoleConnector.Utilities
     {
         public static string Encoded(this string text) => HtmlEncode(text);
 
-        public static void AppendIndentedLine(this StringBuilder builder, string indent, string line) =>
-            builder.Append($"{indent}{line}\n");
+        public static void AppendIndentedLine(this StringBuilder builder, string indent, string line)
+        {
+            if (indent == null) builder.Append(line);
+            else builder.Append($"{indent}{line}\n");
+        }
+
+        //public static void AppendIndentedLines(this StringBuilder builder, string indent, )
+        //{
+
+        //}
 
         public static int IndexOfCrLf(this byte[] buffer, int offset, int size)
         {

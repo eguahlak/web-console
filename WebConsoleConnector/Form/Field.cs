@@ -5,7 +5,7 @@ using WebConsoleConnector.Utilities;
 
 namespace WebConsoleConnector.Form
 {
-    public class TextField : ChildBase
+    public class Field : ChildBase
     {
         private string value;
 
@@ -15,24 +15,33 @@ namespace WebConsoleConnector.Form
             set
             {
                 this.value = value;
-                HttpForm.Events.Add(new UpdateAction(Id, value));
+                HttpForm.Actions.Add(new UpdateAction(Id, value));
             }
         }
 
+        public string Hint { get; }
+
         public bool Editable { get; }
 
-        public TextField(string value, bool editable)
+        public Field(string value, string hint, bool editable)
         {
             this.value = value;
+            Hint = hint == null ? "" : $"placeholder='{hint}' ";
             Editable = editable;
         }
+
+        public Field(string value, bool editable) : this(value, null, editable) { }
+
+        public Field(string value, string hint) : this(value, hint, true) { }
+
+        public Field(string value) : this(value, null, true) { }
 
         public override void Accept(StringBuilder builder, string indent)
         {
             if (Editable)
-                builder.AppendIndentedLine(indent, $"<input id='{Id}' value='{Value}' onchange='sendUpdateAction(this);' />");
+                builder.AppendIndentedLine(indent, $"<input class='Field' id='{Id}' {Hint}value='{Value}' onchange='sendUpdateAction(this);' />");
             else 
-                builder.AppendIndentedLine(indent, $"<input readonly='readonly' id='{Id}' value='{Value}' />");
+                builder.AppendIndentedLine(indent, $"<input class='Field' id='{Id}' {Hint}readonly='readonly' value='{Value}' />");
         }
 
         public override bool Handle(IAction action)

@@ -16,7 +16,7 @@ namespace WebConsoleConnector.Form
 
         public static IDictionary<Guid, IComponent> Components { get; } = new Dictionary<Guid, IComponent>();
 
-        public static IList<IAction> Events { get; } = new List<IAction>();
+        public static IList<IAction> Actions { get; } = new List<IAction>();
 
         public static void WriteLine(string entry)
         {
@@ -45,61 +45,6 @@ namespace WebConsoleConnector.Form
         private string script =
 @"
     <script>
-      function init() {
-        window.setInterval(getEvents, 1000);
-        document.body.style.backgroundColor = ""#ffeeee"";
-        }
-
-      function update(id, value) {
-        let element = document.getElementById(id);
-        switch (element.tagName) {
-          case 'SPAN':
-            element.innerHTML = value;
-            break;
-          case 'INPUT':
-            element.value = value;
-            break;
-          case 'BUTTON':
-            element.innerHTML = value;
-            break;
-          }
-        }
-
-      function getEvents() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // alert(this.responseText);
-            let events = JSON.parse(this.responseText);
-            for (index in events) {
-              let e = events[index];
-              update(e.Id, e.Value);
-              }
-            }
-          };
-        xhttp.open('GET', 'events');
-        xhttp.send();
-        }
-
-      function sendAction(e) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open('POST', '/events');
-        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // Nothing to do yet (fire and forget)
-            }
-          }
-        xhttp.send(JSON.stringify(e));
-        }
-
-      function sendClickAction(element) {
-        sendAction({ $type: 'ClickAction', Id: element.id });
-        }
-
-      function sendUpdateAction(element) {
-        sendAction({ $type: 'UpdateAction', Id: element.id, Value: element.value });
-        } 
     </script>
 ";
 
@@ -117,47 +62,46 @@ namespace WebConsoleConnector.Form
             builder.AppendIndentedLine("", $"</html>");
         }
 
-        public string ToHtml()
-        {
-            StringBuilder builder = new();
-            Accept(builder, "");
-            return builder.ToString();
-        }
+        public override void Accept(StringBuilder builder) => Accept(builder, "");
 
         private int port = 4711;
 
         private void DoListen()
         {
-            using HttpSocketListener listener = new HttpSocketListener(port);
+            using HttpSocketListener listener = new(port);
+            WriteLine($"Listening on port #{port}");
             while (true)
             {
-                WriteLine("Waiting ...");
                 using HttpSocketHandler handler = listener.Accept();
 
                 IHttpRequest request = handler.Receive();
                 IHttpResponse response;
                 if (request is HttpGetRequest httpGet)
                 {
-                    WriteLine($"Processing '{httpGet.Resource}' ...");
                     switch (httpGet.Resource)
                     {
-                        case "/events":
-                            lock (Events)
+                        case "/actions":
+                            lock (Actions)
                             {
-                                response = new HttpEventsResponse(Events);
-                                Events.Clear();
+                                response = new HttpActionsResponse(Actions);
+                                if (Actions.Count > 0)
+                                {
+                                    Actions.Clear();
+                                    WriteLine($"Processed '{httpGet.Resource}'");
+                                }
                             }
                             break;
                         default:
-                            lock (Events)
+                            lock (Actions)
                             {
-                                Events.Clear();
+                                Actions.Clear();
                                 response = new HttpHtmlResponse(this);
+                                WriteLine($"Processed '{httpGet.Resource}'");
                             }
                             break;
                     }
                 }
-                else if (request is HttpEventRequest httpEvent)
+                else if (request is HttpActionRequest httpEvent)
                 {
                     WriteLine($"Processing event from '{httpEvent.Event.Id}' ...");
                     Guid id = httpEvent.Event.Id;

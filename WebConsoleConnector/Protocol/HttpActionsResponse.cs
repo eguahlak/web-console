@@ -5,9 +5,9 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace WebConsoleConnector.Protocol
 {
-    public class HttpEventsResponse : HttpResponseBase
+    public class HttpActionsResponse : HttpResponseBase
     {
-        public HttpEventsResponse(IList<IAction> actions) : base("application/json")
+        public HttpActionsResponse(IList<IAction> actions) : base("application/json")
         {
             string json = SerializeObject(actions);
             data.Content = Encoding.UTF8.GetBytes(json);

@@ -9,6 +9,8 @@ namespace WebConsoleConnector.Form
 {
     public class Panel : ChildBase, IParent
     {
+        
+        
         public Panel()
         {
         }
@@ -21,8 +23,8 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<div id='{Id}'>");
-            foreach (var child in Children) child.Accept(builder, $"{indent}  ");
+            builder.AppendIndentedLine(indent, $"<div class='Panel' id='{Id}'>");
+            foreach (var child in Children) child.Accept(builder, indent == null ? null : $"  {indent}");
             builder.AppendIndentedLine(indent, $"</div>");
         }
 
@@ -31,6 +33,15 @@ namespace WebConsoleConnector.Form
             child.Parent = this;
             HttpForm.Components[child.Id] = child;
             Children.Add(child);
+            //HttpForm.Actions.Add(new InsertAction(Id, child.ToHtml()));
+        }
+
+        public void Insert(IChild child)
+        {
+            child.Parent = this;
+            HttpForm.Components[child.Id] = child;
+            Children.Add(child);
+            HttpForm.Actions.Add(new InsertAction(Id, child.ToHtml()));
         }
 
         public bool Remove(IChild item)
