@@ -67,6 +67,16 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder) => Accept(builder, "");
 
+        private static IHttpResponse CreateActionsResponse()
+        {
+            lock (Actions)
+            {
+                IHttpResponse response = new HttpActionsResponse(Actions);
+                Actions.Clear();
+                return response;
+            }
+        }
+
         private int port = 4711;
 
         private void DoListen()
@@ -87,15 +97,7 @@ namespace WebConsoleConnector.Form
                             response = new HttpFaviconResponse();
                             break;
                         case "/actions":
-                            lock (Actions)
-                            {
-                                response = new HttpActionsResponse(Actions);
-                                if (Actions.Count > 0)
-                                {
-                                    Actions.Clear();
-                                    WriteLine($"Processed '{httpGet.Resource}'");
-                                }
-                            }
+                            response = CreateActionsResponse();
                             break;
                         default:
                             lock (Actions)
@@ -113,7 +115,8 @@ namespace WebConsoleConnector.Form
                     Guid id = httpEvent.Event.Id;
                     var component = Components[id];
                     bool success = component.Handle(httpEvent.Event);
-                    if (success) response = new HttpResponseBase(204);
+                    // if (success) response = new HttpResponseBase(204);
+                    if (success) response = CreateActionsResponse();
                     else response = new HttpResponseBase(405);
                 }
                 else response = new HttpHtmlResponse(this);

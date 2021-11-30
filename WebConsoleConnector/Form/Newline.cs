@@ -15,6 +15,8 @@ namespace WebConsoleConnector.Form
         
         public Border Border { get; }
 
+        public override IParent Parent { get => null; set { } }
+
         public Newline(Border border)
         {
             Border = border;

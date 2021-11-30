@@ -12,7 +12,7 @@ namespace TemplateBackend
         public LtoPanel(string text, string extra) : base() {
             var label = new Label(text) { Width = 30 };
             Add(label);
-            Add(new Field("", $"Enter note on {text} here", true) { Width = 50 }) ;
+            Add(new Field(extra, $"Enter note on {text} here", true) { Width = 50 }) ;
             Add(new Button("Done!") 
             {
                 OnClick = c =>
@@ -92,10 +92,14 @@ namespace TemplateBackend
 
             var myForm = new HttpForm("Hello Nico and Frede")
             {
-                label,
+                new Text("*A*utomatiseret *L*angtidsbevaring og *M*odtagelse af *A*rkivalier", 1),
+                new Text("Media Copy Instrument", 2),
                 Newline.Ruler,
+                label,
                 field,
                 // Newline.Break,
+                Newline.Ruler,
+                new Text("Dette er en `text` med *fed og _understreget /kursiv/_*! **-quality, a//b + c//d = (a**d + c**b)//(b**d)"),
                 new Button("Tryk her!")
                 {
                     OnClick = c =>
@@ -111,8 +115,8 @@ namespace TemplateBackend
             Console.WriteLine("published");
             for (int i = 0; i < 10; i++)
             {
-                Thread.Sleep(2_000);
-                ltoPanel.Insert(new LtoPanel($"LT0000{i}", "Please copy"));
+                Thread.Sleep(10_000);
+                ltoPanel.Insert(new LtoPanel($"LT0000{i}", ""));
             }
 
         }

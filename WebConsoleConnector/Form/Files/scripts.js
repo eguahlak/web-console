@@ -27,25 +27,25 @@ function insert(id, html) {
     //parent.appendChild(template.content.firstChild);
     }
 
+function handleActions() {
+    if (this.readyState != XMLHttpRequest.DONE || this.status != 200) return;
+    let actions = JSON.parse(this.responseText);
+    for (index in actions) {
+        let action = actions[index];
+        switch (action.$type) {
+            case 'UpdateAction':
+                update(action.Id, action.Value);
+                break;
+            case 'InsertAction':
+                insert(action.Id, action.Html);
+                break;
+            }
+        }
+    }
+
 function getActions() {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // alert(this.responseText);
-            let actions = JSON.parse(this.responseText);
-            for (index in actions) {
-                let action = actions[index];
-                switch (action.$type) {
-                    case 'UpdateAction':
-                        update(action.Id, action.Value);
-                        break;
-                    case 'InsertAction':
-                        insert(action.Id, action.Html);
-                        break;
-                    }
-                }
-            }
-        };
+    xhttp.onreadystatechange = handleActions;
     xhttp.open('GET', 'actions');
     xhttp.send();
     }
@@ -54,14 +54,8 @@ function sendAction(action) {
     var xhttp = new XMLHttpRequest();
     xhttp.open('POST', '/action');
     xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // Nothing to do yet (fire and forget)
-            }
-        }
+    xhttp.onreadystatechange = handleActions;
     xhttp.send(JSON.stringify(action));
-
-    // getActions();
     }
 
 function sendClickAction(element) {

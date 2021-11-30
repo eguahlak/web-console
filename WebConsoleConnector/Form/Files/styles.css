@@ -2,6 +2,20 @@
     margin: 2ex;
     }
 
+h1, h2, h3 {
+    font-family: Arial;
+    }
+
+h1 {
+    text-align: center;
+    border: 2px outset;
+    }
+
+tt {
+    color: #000088;
+    background-color: #eeeeee;
+    }
+
 .Label {
     float: left;
     padding-right: 1ex;

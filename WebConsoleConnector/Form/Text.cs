@@ -9,42 +9,49 @@ namespace WebConsoleConnector.Form
 {
     public static class TextEncoder
     {
-        private static void AppendStyle(StringBuilder builder, ref char last, char next, ref bool activated, string name)
+        private static int AppendStyle(StringBuilder builder, string text, int index, ref bool activated, string name)
         {
-            if (next == last)
+            char here = text[index];
+            char next = index < text.Length - 1 ? text[index + 1] : ' ';
+            if (here == next)
             {
                 builder.Append(next);
-                last = ' ';
+                index++;
             }
             else
             {
                 builder.Append(activated ? $"</{name}>" : $"<{name}>");
-                last = next;
                 activated = !activated;
             }
+            return ++index;
         }
 
         public static string Encoded(this string text)
         {
+            text = HtmlEncode(text);
             StringBuilder result = new();
             bool bold = false;
             bool italic = false;
             bool underline = false;
-            char last = ' '; 
-            foreach (char c in text)
+            bool teletype = false;
+            int index = 0;
+            while (index < text.Length)
             {
+                char c = text[index];
                 switch (c)
                 {
-                    case '*': AppendStyle(result, ref last, c, ref bold, "b"); break;
-                    case '/': AppendStyle(result, ref last, c, ref italic, "i"); break;
-                    case '_': AppendStyle(result, ref last, c, ref underline, "u"); break;
+                    case '*': index = AppendStyle(result, text, index, ref bold, "b"); break;
+                    case '/': index = AppendStyle(result, text, index, ref italic, "i"); break;
+                    case '_': index = AppendStyle(result, text, index, ref underline, "u"); break;
+                    case '`': index = AppendStyle(result, text, index, ref teletype, "tt"); break;
                     default:
                         result.Append(c);
-                        last = c;
+                        index++;
                         break;
                 }
             }
-            return HtmlEncode(result.ToString());
+            return result.ToString();
+            //return HtmlEncode(result.ToString());
         }
     }
 
@@ -65,12 +72,13 @@ namespace WebConsoleConnector.Form
             }
         }
 
-        public Text(int level)
+        public Text(string content, int level)
         {
+            this.content = content;
             this.level = level;
         }
 
-        public Text() : this(0) { }
+        public Text(string content) : this(content, 0) { }
 
         public override void Accept(StringBuilder builder, string indent)
         {

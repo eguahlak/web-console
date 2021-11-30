@@ -7,7 +7,12 @@ namespace WebConsoleConnector.Form
     {
         private IParent parent = null;
 
-        public IParent Parent
+        private bool hidden = false;
+        private bool enabled = true;
+
+        //public void Hide
+
+        public virtual IParent Parent
         {
             get => parent;
             set
