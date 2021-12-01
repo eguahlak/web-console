@@ -36,7 +36,7 @@ namespace TemplateBackend
                     (c as Button).Disabled = true;
                 }
             };
-            ClearButton = new("Clear")
+            ClearButton = new("*C*l/e/_a_r")
             {
                 Disabled = true,
                 OnClick = c =>
@@ -58,8 +58,8 @@ namespace TemplateBackend
 
         private static void TryForm()
         {
-            var label = new Label("Her starter det");
-            var field = new Field("Skriv noget her", true)
+            var label = new Label("Her /starter/ det");
+            var field = new Field("", "Skriv noget her", true)
             {
                 OnUpdate = (c, v) =>
                 {

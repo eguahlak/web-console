@@ -9,50 +9,6 @@ namespace WebConsoleConnector.Form
 {
     public static class TextEncoder
     {
-        private static int AppendStyle(StringBuilder builder, string text, int index, ref bool activated, string name)
-        {
-            char here = text[index];
-            char next = index < text.Length - 1 ? text[index + 1] : ' ';
-            if (here == next)
-            {
-                builder.Append(next);
-                index++;
-            }
-            else
-            {
-                builder.Append(activated ? $"</{name}>" : $"<{name}>");
-                activated = !activated;
-            }
-            return ++index;
-        }
-
-        public static string Encoded(this string text)
-        {
-            text = HtmlEncode(text);
-            StringBuilder result = new();
-            bool bold = false;
-            bool italic = false;
-            bool underline = false;
-            bool teletype = false;
-            int index = 0;
-            while (index < text.Length)
-            {
-                char c = text[index];
-                switch (c)
-                {
-                    case '*': index = AppendStyle(result, text, index, ref bold, "b"); break;
-                    case '/': index = AppendStyle(result, text, index, ref italic, "i"); break;
-                    case '_': index = AppendStyle(result, text, index, ref underline, "u"); break;
-                    case '`': index = AppendStyle(result, text, index, ref teletype, "tt"); break;
-                    default:
-                        result.Append(c);
-                        index++;
-                        break;
-                }
-            }
-            return result.ToString();
-            //return HtmlEncode(result.ToString());
-        }
     }
 
 

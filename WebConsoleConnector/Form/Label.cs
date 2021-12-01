@@ -28,7 +28,7 @@ namespace WebConsoleConnector.Form
 
         public override void Accept(StringBuilder builder, string indent)
         {
-            builder.AppendIndentedLine(indent, $"<div class='Label' style='{Width}' id='{Id}'>{Value}</div>");
+            builder.AppendIndentedLine(indent, $"<div class='Label' style='{Width}' id='{Id}'>{Value.Encoded()}</div>");
         }
 
         public override bool Handle(IAction action) => false;
