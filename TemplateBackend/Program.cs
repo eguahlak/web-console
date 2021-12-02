@@ -76,7 +76,8 @@ namespace TemplateBackend
                 Newline.Ruler,
                 label,
                 field,
-                // Newline.Break,
+                Newline.Break,
+                new LtoPanel("ODA0007", "something"),
                 Newline.Ruler,
                 new Text("Dette er en `text` med *fed og _understreget /kursiv/_*! **-quality, a//b + c//d = (a**d + c**b)//(b**d)"),
                 new Button("Tryk her!")
