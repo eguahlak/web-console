@@ -3,10 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <PackOnBuild>true</PackOnBuild>
-    <PackageId>dk.rigsarkivet.HttpForm</PackageId>
-    <PackageVersion>0.9</PackageVersion>
+    <PackageId>WebConsoleConnector</PackageId>
+    <PackageVersion>0.9.1</PackageVersion>
+    <Authors>Anders Kalhauge, Frederik Skou</Authors>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Form\" />
     <None Remove="Form\Files\favicon.ico" />
@@ -27,12 +31,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Form\Files\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Files\scripts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Files\styles.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

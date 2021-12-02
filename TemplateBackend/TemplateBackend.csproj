@@ -6,13 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebConsoleConnector\WebConsoleConnector.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="JsonKnownTypes" />
+    <None Remove="WebConsoleConnector" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="JsonKnownTypes" Version="0.5.4" />
+    <PackageReference Include="WebConsoleConnector" Version="0.9.1" />
   </ItemGroup>
 </Project>
