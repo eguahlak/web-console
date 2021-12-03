@@ -10,6 +10,6 @@
     <None Remove="WebConsoleConnector" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="WebConsoleConnector" Version="0.9.1" />
+    <ProjectReference Include="..\WebConsoleConnector\WebConsoleConnector.csproj" />
   </ItemGroup>
 </Project>

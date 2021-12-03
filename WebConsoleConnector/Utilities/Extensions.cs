@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using WebConsoleConnector.Form;
 using static System.Web.HttpUtility;
@@ -13,12 +15,38 @@ namespace WebConsoleConnector.Utilities
             else builder.Append($"{indent}{line}\n");
         }
 
+
+        public static Stream StreamFromEmbeddedResource(string name) => EmbeddedResource<HttpForm>.StreamOf(name);
+        //{
+        //    string path = $"WebConsoleConnector.{name.Replace("/", ".")}";
+        //    var assembly = typeof(Extensions).GetTypeInfo().Assembly;
+        //    Stream resource = assembly.GetManifestResourceStream(path);
+        //    return resource;
+        //}
+
+        public static StreamReader ReaderFromEmbeddedResource(string name)
+        {
+            var stream = EmbeddedResource<HttpForm>.StreamOf(name);
+            var reader = new StreamReader(stream);
+            return reader;
+            //reader.ReadToEnd().Split()
+            //string text = reader.ReadToEnd(); //hello world!
+        }
+
         public static void AppendIndentedLines(this StringBuilder builder, string indent, string fileName)
         {
-            foreach (string line in File.ReadLines(fileName))
+            var reader = ReaderFromEmbeddedResource(fileName);
+            string line = reader.ReadLine();
+            while (line != null)
             {
                 builder.AppendIndentedLine(indent, line);
+                line = reader.ReadLine();
             }
+
+            //foreach (string line in File.ReadLines(fileName))
+            //{
+            //    builder.AppendIndentedLine(indent, line);
+            //}
         }
 
         public static int IndexOfCrLf(this byte[] buffer, int offset, int size)

@@ -6,7 +6,7 @@ const DISABLE = 3;
 
 
 function init() {
-    window.setInterval(getActions, 2000);
+    window.setInterval(getActions, 500);
     document.body.style.backgroundColor = '#cccccc';
     }
 
@@ -61,6 +61,9 @@ function handleActions() {
             case 'ChangeAction':
                 change(action.Id, action.Change);
                 break;
+            case 'HaltAction':
+                sendHaltAction(action.Id, action.Reason);
+                break;
             }
         }
     }
@@ -86,4 +89,8 @@ function sendClickAction(element) {
 
 function sendUpdateAction(element) {
     sendAction({ $type: 'UpdateAction', Id: element.id, Value: element.value });
+    }
+
+function sendHaltAction(id, reason) {
+    sendAction({ $type: 'HaltAction', Id: id, Reason: reason });
     }

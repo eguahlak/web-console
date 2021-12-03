@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WebConsoleConnector.Form;
+using WebConsoleConnector.Utilities;
 
 namespace WebConsoleConnector.Protocol
 {
@@ -11,7 +7,7 @@ namespace WebConsoleConnector.Protocol
     {
         public HttpFaviconResponse() : base("image/png")
         {
-            data.Content = File.ReadAllBytes("Form/Files/favicon.ico");
+            data.Content = EmbeddedResource<HttpForm>.ReadAllBytes("Form/Files/favicon.ico");
         }
     }
 }

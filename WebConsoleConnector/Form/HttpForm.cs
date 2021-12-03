@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using WebConsoleConnector.Utilities;
-using System.Collections;
-using WebConsoleConnector.Protocol;
-using WebConsoleConnector.Form.Actions;
 using System.Threading;
-using System.IO;
-using System.Reflection;
+using System.Threading.Tasks;
+using WebConsoleConnector.Form.Actions;
+using WebConsoleConnector.Protocol;
+using WebConsoleConnector.Utilities;
 
 namespace WebConsoleConnector.Form
 {
     public class HttpForm : ComponentBase, IParent
     {
+
         public string Title { get; set; }
 
         public static IDictionary<Guid, IComponent> Components { get; } = new Dictionary<Guid, IComponent>();
@@ -113,10 +111,15 @@ namespace WebConsoleConnector.Form
                 {
                     WriteLine($"Processing event from '{httpEvent.Event.Id}' ...");
                     Guid id = httpEvent.Event.Id;
-                    var component = Components[id];
-                    bool success = component.Handle(httpEvent.Event);
-                    // if (success) response = new HttpResponseBase(204);
-                    if (success) response = CreateActionsResponse();
+                    if (id != Id)
+                    {
+                        var component = Components[id];
+                        bool success = component.Handle(httpEvent.Event);
+                        // if (success) response = new HttpResponseBase(204);
+                        if (success) response = CreateActionsResponse();
+                        else response = new HttpResponseBase(405);
+                    }
+                    else if (httpEvent.Event is HaltAction) return;
                     else response = new HttpResponseBase(405);
                 }
                 else response = new HttpHtmlResponse(this);
@@ -129,6 +132,21 @@ namespace WebConsoleConnector.Form
             this.port = port;
             Thread listener = new(DoListen);
             listener.Start();
+        }
+
+        public async Task PublishAsync(int port)
+        {
+            this.port = port;
+            await Task.Run(DoListen);
+        }
+
+        public void Halt(string reason)
+        {
+            lock(Actions)
+            {
+                // Actions.Clear();
+                Actions.Add(new HaltAction(Id, reason));
+            }
         }
 
         public bool Remove(IChild item)
