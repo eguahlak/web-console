@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateBackend", "Template
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebConsoleConnector", "WebConsoleConnector\WebConsoleConnector.csproj", "{011A7851-6F47-491E-8C83-DA7403251DEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateWorker", "TemplateWorker\TemplateWorker.csproj", "{8668C8B5-943B-4091-99C0-8A54A4721454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateWorker", "TemplateWorker\TemplateWorker.csproj", "{8668C8B5-943B-4091-99C0-8A54A4721454}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{56C9516C-E4E1-4BA8-92EF-FA2B1A4A3C21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

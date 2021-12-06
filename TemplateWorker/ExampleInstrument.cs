@@ -35,11 +35,6 @@ namespace TemplateWorker
                 CountLabel, CountField, NoteField, DoItButton
             };
             Add(DashBoardPanel);
-            //Add(CountLabel);
-            //Add(CountField);
-            //Add(NoteField);
-            //Add(DoItButton);
-            //Add(Newline.Ruler);
             Add(StopButton);
         }
     }

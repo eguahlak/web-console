@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using WebConsoleConnector.Form;
-using static WebConsoleConnector.Utilities.Extensions;
 
 
 namespace TemplateBackend
@@ -56,7 +55,7 @@ namespace TemplateBackend
     class Program
     {
 
-        private static void TryForm()
+        static void Main(string[] args)
         {
             var label = new Label("Her /starter/ det");
             var field = new Field("", "Skriv noget her", true)
@@ -69,15 +68,13 @@ namespace TemplateBackend
             var ltoPanel = new Panel(true);
 
 
-            var myForm = new HttpForm("Hello Nico and Frede")
+            var myForm = new HttpForm("Innovation Review")
             {
                 new Text("*A*utomatiseret *L*angtidsbevaring og *M*odtagelse af *A*rkivalier", 1),
                 new Text("Media Copy Instrument", 2),
                 Newline.Ruler,
                 label,
                 field,
-                Newline.Break,
-                new LtoPanel("ODA0007", "something"),
                 Newline.Ruler,
                 new Text("Dette er en `text` med *fed og _understreget /kursiv/_*! **-quality, a//b + c//d = (a**d + c**b)//(b**d)"),
                 new Button("Tryk her!")
@@ -101,10 +98,5 @@ namespace TemplateBackend
 
         }
 
-        static void Main(string[] args)
-        {
-            // TryFormPublish();
-            TryForm();
-        }
     }
 }
